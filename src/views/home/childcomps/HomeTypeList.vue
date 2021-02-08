@@ -33,7 +33,8 @@
         // 赋值正确的配置
         const option = {
           type: this.current_index === 0 ? "querySonger": "queryList",
-          id: this.typeList[index].id
+          id: this.typeList[index].id,
+          name:this.typeList[index].name
         };
         this.$emit("queryList", option)
       }

@@ -133,7 +133,6 @@
       //计算offset
       imageLoad() {
         this.contBarOffset = this.$refs.bar2.$el.offsetTop
-        // console.log(this.contBarOffset);
       }
       ,
       scroll(position) {

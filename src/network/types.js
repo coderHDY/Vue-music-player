@@ -19,14 +19,26 @@ export function initSinger(res) {
 
 // 歌曲对象
 class Song {
-  constructor(id, name, img, url, singer, singerId, count) {
+  constructor(id, name, img, alId, alName, singer, singerId, mark) {
     this.id = id;
     this.name = name;
-    this.url = url;
+    this.img = img;
+    this.alId = alId;
+    this.alName = alName;
     this.singer = singer;
     this.singerId = singerId;
-    this.count = count;
+    this.mark = mark;
   }
+}
+
+// 封装歌曲对象
+export function initSongs(res) {
+  const songs = [];
+  res.forEach(item => {
+    const song = new Song(item.id, item.name, item.al.picUrl, item.al.id, item.al.name, item.ar[0].name, item.ar[0].id, item.mark)
+    songs.push(song)
+  });
+  return songs
 }
 
 // 歌单简介对象

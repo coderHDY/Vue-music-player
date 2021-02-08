@@ -17,6 +17,7 @@
 
 <script>
   import Swiper from "swiper"
+  import { debounce } from "../../../components/common/utils/utils";
 
   export default {
     name: "HomeSwiper",
@@ -30,7 +31,9 @@
     },
     data() {
       return {
-        isEmit:false,
+        isEmit: false,
+        //刷新暂存对象
+        refresh: null,
         //swipe 的切换效果随机
         effect: [ "flip", "slide", "fade", "cube", "coverflow" ],
         //swipe 的参数
@@ -52,12 +55,13 @@
       }
     },
     mounted() {
-      this.changeSlid()
-      this.initSwiper()
+      this.changeSlid();
+      this.initSwiper();
+      this.refresh = debounce(this.reloadSwiper, 100); //防抖函数正确使用方式！
     },
     methods: {
       //随机特效
-      changeSlid(){
+      changeSlid() {
         const index = Math.floor(Math.random() * 10 / 2);
         this.swiperOptions.effect = this.effect[index]
       },
@@ -67,14 +71,17 @@
         this.swiper = mySwiper
       },
       // 图片加载后重新初始化swiper，让loop生效
-      imageLoad() {
+      reloadSwiper() {
+        console.log("刷新了swiper");
         if (this.swiper) this.swiper.destroy();
         this.initSwiper()
-        if(!this.isEmit){
+        if (!this.isEmit) {
           this.$emit("imageLoad")
-          this.isEmit=true
+          this.isEmit = true
         }
-        //
+      },
+      imageLoad() {
+        this.refresh()
       }
     }
   }
