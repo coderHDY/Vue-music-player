@@ -1,0 +1,58 @@
+@import "normalize.css";
+@import "../../../../node_modules/swiper/css/swiper.min.css";
+/*pan-y表示启用单指垂直平移手势(上下滑动事件)*/
+* {
+  touch-action: pan-y;
+}
+
+:root {
+  --color-text: #585858;
+  --color-text-dust: #d6d6d6;
+  --color-red: rgb(216, 30, 6);
+  --color-pink: #ffc1e5;
+  --color-white: #fff;
+  --color-dust: #ececec;
+  --font-small: 13px;
+  --font-big: 17px;
+  --line-height: 1.5;
+}
+
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  background-color: var(--color-dust);
+  color: var(--color-text);
+  width: 100vw;
+  height: 100vh;
+}
+
+a {
+  color: var(--color-text);
+  text-decoration: none;
+}
+
+.clear-fix {
+  zoom: 1;
+}
+
+.clear-fix::after {
+  clear: both;
+  display: block;
+  width: 0;
+  height: 0;
+  visibility: hidden;
+}
+
+.left {
+  float: left;
+}
+
+.right {
+  float: right;
+}
