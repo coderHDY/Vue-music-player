@@ -5,7 +5,7 @@
     </div>
     <div class = "scroll-wrapper" ref = "scrollWrapper">
       <div class = "recommend-list scroll-content">
-        <div class = "recommend-item" v-for = "item in songLists">
+        <div class = "recommend-item" v-for = "item in songLists" @click = "queryList(item.name,item.id)">
           <img :src = "item.img" class = "item-img" @load = "imageLoad">
           <div class = "item-name">{{item.name}}</div>
           <div class = "item-count">{{item.count | count}}</div>
@@ -57,6 +57,14 @@
           observeImage: true
         });
         this.Bscroll = bs;
+      },
+      queryList(name, id) {
+        const option = {
+          type: "queryList",
+          name: name,
+          id: id
+        };
+        this.$emit("queryList", option)
       }
     },
     mounted() {

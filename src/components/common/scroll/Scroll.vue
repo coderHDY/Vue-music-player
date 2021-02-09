@@ -57,6 +57,9 @@
       getPositionY() {
         return this.scroll.y
       },
+      scrollTo(x = 0, y = 0, timer = 300) {
+        this.scroll.scrollTo(x, y, timer)
+      },
       refresh() {
         // console.log("判断成功");
         this.scroll.refresh()

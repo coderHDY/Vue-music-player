@@ -1,7 +1,7 @@
 <template>
   <NavBar :class = "{'bg-color':isBgCollor}">
     <img src = "~assets/img/common/back_white.svg" slot = "left" class = "right" @click = "back">
-    <div slot = "center" class = "center">~{{title}}~</div>
+    <div slot = "center" class = "center">歌单</div>
   </NavBar>
 </template>
 
@@ -15,9 +15,6 @@
       isBgCollor: {
         type: Boolean,
         default: false
-      },
-      title: {
-        type: String,
       }
     },
     components: {
@@ -33,7 +30,7 @@
 
 <style scoped>
   .bg-color {
-    background-color: #b1b1b1;
+    background-color: var(--color-red);
   }
 
   .right {

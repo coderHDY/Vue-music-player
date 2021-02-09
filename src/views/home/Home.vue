@@ -9,9 +9,12 @@
             @pullingUp = "pullUpload"
             @scroll = "scroll"
             ref = "scroll">
-      <HomeSwiper :banners = "banners" @imageLoad = "imageLoad"/>
-      <DelayRecommends :recommends = "recommends" @imageLoad = "imageLoad"/>
-      <RecommendList :recommendSongList = "recommendSongList" @imageLoad = "imageLoad"/>
+      <Swiper :banners = "banners" @imageLoad = "imageLoad"/>
+      <DelayRecommends :recommends = "recommends"
+                       @queryRankOfLists = "queryRankOfLists"
+                       @imageLoad = "imageLoad"
+                       @queryList = "queryList"/>
+      <RecommendList :recommendSongList = "recommendSongList" @imageLoad = "imageLoad" @queryList = "queryList"/>
       <TabControl class = "home-tab-control" :items = "items" @TabClick = "TabClick" ref = "bar2"/>
       <HomeTypeList :type-list = "typeList[current_index].list" :current_index = "current_index"
                     @queryList = "queryList"/>
@@ -22,13 +25,13 @@
 <script>
   // 内部引用
   import HomeNavBar from "./childcomps/HomeNavBar";
-  import HomeSwiper from "./childcomps/HomeSwiper";
   import DelayRecommends from "./childcomps/DelayRecommends";
   import RecommendList from "./childcomps/RecommendList";
   import HomeTypeList from "./childcomps/HomeTypeList";
   // 外部引用
   import Scroll from "../../components/common/scroll/Scroll";
   import TabControl from "../../components/common/tabcontrol/TabControl";
+  import Swiper from "../../components/common/swiper/mySwiper"
   // 网络引用
   import {
     delayRecommends,
@@ -70,7 +73,7 @@
     },
     components: {
       HomeNavBar,
-      HomeSwiper,
+      Swiper,
       Scroll,
       DelayRecommends,
       RecommendList,
@@ -143,9 +146,16 @@
         }
       },
       queryList(option) {
+        //搜索哪种类型由 option 里的 type 决定
         this.$router.push({
           path: "songslist",
           query: option
+        })
+      },
+      queryRankOfLists(options) {
+        this.$router.push({
+          path: "listoflists",
+          query: options
         })
       }
     },

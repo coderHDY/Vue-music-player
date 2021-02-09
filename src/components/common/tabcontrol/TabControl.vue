@@ -40,7 +40,7 @@
 <style scoped>
   .teb-control {
     display: flex;
-    background-color: #f3f3f3;
+    background-color: #fff;
     text-align: center;
     z-index: 6;
   }

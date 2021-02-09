@@ -1,10 +1,11 @@
 <template>
   <div>
-    <SongListNavBar :title = "title" :isBgCollor = "isBgCollor"/>
+    <SongListNavBar :isBgCollor = "isBgCollor"/>
     <Scroll class = "scroll" ref = "scroll"
             :probeType = "3"
             @scroll = "scroll">
-      <ListInfoBox :information = "option" @imageLoad = "imageLoad" ref = "infoBox"/>
+      <TopImg :img = "option && option.img" ref = "topImg" @imageLoad = "imageLoad"/>
+      <ListInfoBox :information = "option" ref = "infoBox"/>
       <ListOfSongs :list = "songsList"/>
     </Scroll>
   </div>
@@ -17,9 +18,11 @@
   import ListInfoBox from "./childcomps/ListInfoBox";
   // 外部调用
   import Scroll from "../../components/common/scroll/Scroll";
-  import { queryArtistInfo, queryArtistSongs } from "../../network/songList";
-  import { initSongs } from "../../network/types";
+  import TopImg from "../../components/common/topimg/TopImg";
   // 网络调用
+  import { getDelaySongs, getNewSongs, queryArtistInfo, queryArtistSongs, querySongList } from "../../network/songList";
+  import { initHomeSongList, initNewSongs, initSongs } from "../../network/types";
+
   export default {
     name: "SongsList",
     data() {
@@ -35,36 +38,29 @@
       SongListNavBar,
       Scroll,
       ListOfSongs,
-      ListInfoBox
+      ListInfoBox,
+      TopImg
     },
     methods: {
       imageLoad() {
         this.$refs.scroll.refresh();
         //从评论开始变色
-        this.navBarOffset = this.$refs.infoBox.$refs.messageBox.offsetTop;
+        this.navBarOffset = this.$refs.infoBox.$el.offsetTop;
       },
       scroll(position) {
         //做navBar
         if (-position["y"] > this.navBarOffset - 44) {
-          // console.log(-position["y"]);
           this.isBgCollor = true
         } else {
           this.isBgCollor = false
         }
         //做图片放大效果
         if (position["y"] > 0) {
-          this.$refs.infoBox.$refs.topImage.style.width = "calc(100vw + " + position['y'] / 2 + "px)";
-          this.$refs.infoBox.$refs.topImage.style.top = "-" + (position['y'] + 1) + "px";
-          if (this.$refs.infoBox.$refs.topImage.className.indexOf(" out-top") === -1) {
-            this.$refs.infoBox.$refs.topImage.className += " out-top"
-          }
+          this.$refs.topImg.upBigger(position["y"])
         } else {
         }
-      }
-    },
-    created() {
-      this.option = this.$route.query;
-      if (this.option.type === "querySonger") {
+      },
+      querySonger() {
         this.title = this.option.name;
         // 查询歌手的歌单
         queryArtistSongs(this.option.id).then(res => {
@@ -73,8 +69,49 @@
         })
         // 查询基本信息message
         queryArtistInfo(this.option.id).then(res => {
+          // this.$set(this.option, "message", res.data.briefDesc) //这个不用set又可以了？
           this.option.message = res.data.briefDesc;
         })
+      },
+      queryList() {
+        querySongList(this.option.id).then(res => {
+          this.songsList = initSongs(res.data.playlist.tracks);
+          this.$set(this.option, "img", res.data.playlist.coverImgUrl);
+          this.$set(this.option, "info", initHomeSongList([ res.data.playlist ])[0])
+        })
+      },
+      queryDelaySongs() {
+        getDelaySongs().then(res => {
+          const date = new Date();
+          const showDate = date.getDay() + " / " + date.getMonth();
+          this.songsList = initSongs(res.data.data.dailySongs);
+          this.$set(this.option, "img", this.songsList[0].img) //重点：新增监听
+          this.$set(this.option, "name", showDate + " 每日推荐") //重点：新增监听
+        })
+      },
+      queryNewSongs() {
+        getNewSongs().then(res => {
+          this.songsList = initNewSongs(res.data.result);
+          this.$set(this.option, "img", this.songsList[0].img) //重点：新增监听
+          this.$set(this.option, "name", " 新歌推荐") //重点：新增监听
+        })
+      }
+    },
+    created() {
+      this.option = this.$route.query;
+      switch (this.option.type) {
+        case "querySonger":
+          this.querySonger()
+          break;
+        case "queryList":
+          this.queryList()
+          break;
+        case "queryDelaySongs":
+          this.queryDelaySongs()
+          break;
+        case "queryNewSongs":
+          this.queryNewSongs()
+          break;
       }
     },
     activated() {

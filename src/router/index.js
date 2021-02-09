@@ -1,11 +1,18 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-const SongsList=()=>import( "../views/songslist/SongsList");
+import Router from 'vue-router'
 
-Vue.use(VueRouter)
+//路由导航冗余报错（路由重复）
+const originalPush = Router.prototype.push;
+Router.prototype.push = function push(location) {
+  return originalPush.call(this, location).catch(err => err)
+};
+Vue.use(VueRouter);
 const Home = () => import("../views/home/Home");
 const Hot = () => import("../views/hot/Hot");
 const User = () => import("../views/user/User")
+const SongsList = () => import( "../views/songslist/SongsList");
+const ListOfLists=()=>import("../views/listoflists/ListOfLists")
 const routes = [
   {
     path: '/',
@@ -30,6 +37,11 @@ const routes = [
     path: '/songslist',
     name: 'SongsLost',
     component: SongsList
+  },
+  {
+    path: '/listoflists',
+    name: 'ListOfLists',
+    component: ListOfLists
   }
 ]
 const router = new VueRouter({

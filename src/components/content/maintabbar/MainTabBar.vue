@@ -1,5 +1,5 @@
 <template>
-  <tab-bar>
+  <tab-bar v-if="isShow">
     <tab-bar-item link = "/home">
       <img src = "~assets/img/common/hert_dust.svg" slot = "item-icon">
       <img src = "~assets/img/common/hert_red.svg" slot = "item-icon-active">
@@ -24,9 +24,26 @@
 
   export default {
     name: "MainTabBar",
+    data() {
+      return {
+        isShow: true
+      }
+    },
     components: {
       TabBar,
       TabBarItem
+    },
+    methods:{
+      show(){
+        this.isShow=true
+      },
+      hidden(){
+        this.isShow=false
+      }
+    },
+    mounted() {
+      this.$bus.$on("tabBarShow",()=>this.show())
+      this.$bus.$on("tabBarHidden",()=>this.hidden())
     }
   }
 </script>

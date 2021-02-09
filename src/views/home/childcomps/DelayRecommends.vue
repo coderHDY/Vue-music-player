@@ -1,7 +1,7 @@
 <template>
   <div class = "recommends-box">
     <div class = "recommend" v-for = "(item,index) in recommends" @click = "recommendClick(index)">
-      <img :src = "item.iconUrl" @load="imageLoad">
+      <img :src = "item.iconUrl" @load = "imageLoad">
       <div class = "recommend-title">{{item.name}}</div>
     </div>
   </div>
@@ -18,19 +18,48 @@
         }
       }
     },
-    data(){
+    data() {
       return {
-        isEmit:false
+        isEmit: false
       }
     },
     methods: {
-      recommendClick(index) {
-        console.log("---." + index)
+      queryDelaySongs() {
+        const option = {
+          type: "queryDelaySongs"
+        }
+        this.$emit("queryList", option)
       },
-      imageLoad(){
-        if(!this.isEmit){
+      queryNewSongs() {
+        const option = {
+          type: "queryNewSongs"
+        }
+        this.$emit("queryList", option)
+      },
+      queryRankOfLists() {
+        const option = {
+          type: "queryRankOfLists"
+        }
+        this.$emit("queryRankOfLists", option)
+      },
+      recommendClick(index) {
+        switch (index) {
+          case 0:
+            this.queryDelaySongs();
+            break;
+          case 1:
+            this.queryNewSongs();
+            break;
+          case 2: {
+            this.queryRankOfLists();
+            break;
+          }
+        }
+      },
+      imageLoad() {
+        if (!this.isEmit) {
           this.$emit("imageLoad");
-          this.isEmit=true
+          this.isEmit = true
         }
       }
     }

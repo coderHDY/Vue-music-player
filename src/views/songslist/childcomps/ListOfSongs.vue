@@ -4,8 +4,8 @@
       <span class = "index">{{index+1}}</span>
       <div class = "info-box">
         <div class = "title">{{item.name}}</div>
-        <div class = "singer-box">--{{item.singer}}</div>
       </div>
+      <div class = "singer-box">--{{item.singer}}</div>
     </div>
   </div>
 </template>
@@ -34,7 +34,7 @@
     display: block;
     margin-top: 2px;
     width: 100%;
-    height: 8vh;
+    height: 10vh;
     background-color: #fff;
   }
 
@@ -42,18 +42,17 @@
     display: inline-block;
     position: relative;
     width: 8vh;
-    height: 8vh;
-    line-height: 8vh;
+    height: 100%;
+    line-height: 10vh;
     color: var(--color-text-dust);
     text-align: center;
-    /*vertical-align: top;*/
   }
 
   .info-box {
     position: relative;
     display: inline-block;
-    height: 100%;
-    line-height: 100%;
+    width: calc(100vw - 10vh);
+    vertical-align: middle;
   }
 
   .title {
@@ -65,9 +64,11 @@
   }
 
   .singer-box {
-    display: inline-block;
-    position: relative;
-    margin-left: 10px;
+    position: absolute;
+    display: block;
+    right: 20px;
+    bottom: 1px;
     font-size: var(--font-small);
+    z-index: 6;
   }
 </style>

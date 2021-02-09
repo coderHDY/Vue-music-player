@@ -7,7 +7,7 @@ class Singer {
   }
 }
 
-//封装歌手Array
+//封装歌手函数
 export function initSinger(res) {
   const singers = [];
   res.forEach(item => {
@@ -19,7 +19,7 @@ export function initSinger(res) {
 
 // 歌曲对象
 class Song {
-  constructor(id, name, img, alId, alName, singer, singerId, mark) {
+  constructor({ id, name, img, alId, alName, singer, singerId, mark }) {
     this.id = id;
     this.name = name;
     this.img = img;
@@ -31,11 +31,36 @@ class Song {
   }
 }
 
-// 封装歌曲对象
+//封装新歌曲函数（返回数据和前面不一样，没办法)
+export function initNewSongs(res) {
+  const songs = [];
+  res.forEach(item => {
+    const song = new Song({
+      id: item.id,
+      name: item.name,
+      img: item.picUrl,
+      singer: item.song.artists[0].name,
+      singerId: item.song.artists[0].id
+    });
+    songs.push(song)
+  });
+  return songs
+}
+
+// 封装歌单里的歌曲函数
 export function initSongs(res) {
   const songs = [];
   res.forEach(item => {
-    const song = new Song(item.id, item.name, item.al.picUrl, item.al.id, item.al.name, item.ar[0].name, item.ar[0].id, item.mark)
+    const song = new Song({
+      id: item.id,
+      name: item.name,
+      img: item.al.picUrl,
+      alId: item.al.id,
+      alName: item.al.name,
+      singer: item.ar[0].name,
+      singerId: item.ar[0].id,
+      mark: item.mark
+    })
     songs.push(song)
   });
   return songs
@@ -43,7 +68,7 @@ export function initSongs(res) {
 
 // 歌单简介对象
 class SongList {
-  constructor(id, name, img, copywriter, count, createTime, author, authorId, authorImg) {
+  constructor({ id, name, img, copywriter, count, createTime, author, authorId, authorImg, updateFrequency = "每周更新", updateTime }) {
     this.id = id;
     this.name = name;
     this.img = img;
@@ -53,16 +78,45 @@ class SongList {
     this.authorId = authorId;
     this.copywriter = copywriter;
     this.authorImg = authorImg;
+    this.updateFrequency = updateFrequency;
+    this.updateTime = updateTime
   }
+}
+
+// 排行榜歌单封装函数
+export function initListRank(res) {
+  const rank = [];
+  res.forEach(item => {
+    const songsList = new SongList({
+      id: item.id,
+      name: item.name,
+      img: item.coverImgUrl,
+      copywriter: item.description,
+      count: item.playCount,
+      createTime: item.createTime,
+      updateFrequency: item.updateFrequency,
+      updateTime: item.updateTime
+    })
+    rank.push(songsList)
+  })
+  return rank
 }
 
 //封装主页推荐歌单Array对象、首页热门歌单对象
 export const initHomeSongList = function (res) {
   const songLists = [];
   for (let item of res) {
-    const songList = new SongList(item.id, item.name, item.picUrl || item.coverImgUrl,
-      item.copywriter || item.description, item.playcount || item.playCount,
-      item.createTime, item.creator.nickname, item.creator.userId, item.creator.backgroundUrl)
+    const songList = new SongList({
+      id: item.id,
+      name: item.name,
+      img: item.coverImgUrl || item.picUrl,
+      copywriter: item.copywriter || item.description,
+      count: item.playcount || item.playCount,
+      createTime: item.createTime,
+      author: item.creator && item.creator.nickname || null,
+      authorId: item.creator && item.creator.userId || null,
+      authorImg: item.creator && item.creator.coverImgUrl || item.creator && item.creator.backgroundUrl || null
+    })
     songLists.push(songList)
   }
   // 将返回数据封装成对象后再使用

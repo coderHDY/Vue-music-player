@@ -16,11 +16,13 @@
 </template>
 
 <script>
+  //需要自己导入防抖函数
+  //传入带url和img的对象数组就行
   import Swiper from "swiper"
-  import { debounce } from "../../../components/common/utils/utils";
+  import { debounce } from "../utils/utils";
 
   export default {
-    name: "HomeSwiper",
+    name: "mySwiper",
     props: {
       banners: {
         type: Array,
@@ -72,7 +74,7 @@
       },
       // 图片加载后重新初始化swiper，让loop生效
       reloadSwiper() {
-        console.log("刷新了swiper");
+        // console.log("刷新了swiper");
         if (this.swiper) this.swiper.destroy();
         this.initSwiper()
         if (!this.isEmit) {
