@@ -1,6 +1,6 @@
 <template>
   <div id = "app">
-    <keep-alive exclude="SongsList">
+    <keep-alive exclude = "SongsList,Home">
       <router-view/>
     </keep-alive>
     <MainTabBar/>

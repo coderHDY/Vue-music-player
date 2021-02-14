@@ -1,9 +1,14 @@
 <template>
   <div class = "hot">
-    <HotNavBar @TabClick = "TabClick"/>
-    <Scroll class = "scroll" ref = "scroll">
-      <SongListView :list = "showList" @itemClick = "itemClick"/>
-    </Scroll>
+    <HotNavBar @tabClick = "tabClick" ref = "navBar" :current_index = "current_index"/>
+    <SwiperScroll @tabClick = "tabClick" ref = "swiperScroll">
+      <Scroll class = "scroll" slot = "one">
+        <SongListView :list = "list.hotLists" @itemClick = "itemClick"/>
+      </Scroll>
+      <Scroll class = "scroll" slot = "two">
+        <SongListView :list = "list.hotSinger" @itemClick = "itemClick"/>
+      </Scroll>
+    </SwiperScroll>
   </div>
 </template>
 
@@ -13,6 +18,7 @@
   // 外部导入
   import Scroll from "../../components/common/scroll/Scroll";
   import SongListView from "../../components/content/songlistview/SongListView";
+  import SwiperScroll from "../../components/common/swiperscroll/SwiperScroll";
   //   网络组件
   import { initHot } from "../../network/hot";
   import { initHomeSongList, initSinger } from "../../network/types";
@@ -22,6 +28,7 @@
     components: {
       HotNavBar,
       Scroll,
+      SwiperScroll,
       SongListView
     },
     data() {
@@ -34,12 +41,14 @@
       }
     },
     methods: {
-      TabClick(index) {
+      tabClick(index) {
         this.current_index = index;
-        this.$refs.scroll.scrollTo(0, 0, 300)
-        // console.log(index);
+        this.$refs.swiperScroll.swiperChange(index)
       },
       Init() {
+        if (!this.$store.state.user) {
+          this.$router.replace("/home")
+        }
         initHot().then(res => {
           this.list.hotLists = initHomeSongList(res[0].data.result);
           this.list.hotSinger = initSinger(res[1].data.list.artists);

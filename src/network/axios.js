@@ -18,9 +18,9 @@ export function request(config, func = null) {
   instance.interceptors.response.use(res => {
     res.headers["Access-Control-Allow-Origin"] = "null"; //解决跨域访问问题
     return res
-    return
   }, err => {
     console.log(err);
+    return err
   })
   return instance(config)
 }

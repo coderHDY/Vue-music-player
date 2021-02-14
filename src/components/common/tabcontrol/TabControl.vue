@@ -30,7 +30,7 @@
       itemClick(index) {
         if (this.current_index !== index) {
           this.current_index = index;
-          this.$emit("TabClick", this.current_index)
+          this.$emit("tabClick", this.current_index)
         }
       }
     }

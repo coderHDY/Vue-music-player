@@ -7,16 +7,6 @@ class Singer {
   }
 }
 
-//封装歌手函数
-export function initSinger(res) {
-  const singers = [];
-  res.forEach(item => {
-    const singer = new Singer(item.id, item.name, item.picUrl)
-    singers.push(singer)
-  })
-  return singers
-}
-
 // 歌曲对象
 class Song {
   constructor({ id, name, img, alId, alName, singer, singerId, mark }) {
@@ -29,6 +19,33 @@ class Song {
     this.singerId = singerId;
     this.mark = mark;
   }
+}
+
+// 歌单简介对象
+class SongList {
+  constructor({ id, name, img, copywriter, count, createTime, author, authorId, authorImg, updateFrequency = "每周更新", updateTime }) {
+    this.id = id;
+    this.name = name;
+    this.img = img;
+    this.count = count;
+    this.createTime = createTime;
+    this.author = author;
+    this.authorId = authorId;
+    this.copywriter = copywriter;
+    this.authorImg = authorImg;
+    this.updateFrequency = updateFrequency;
+    this.updateTime = updateTime
+  }
+}
+
+//封装歌手函数
+export function initSinger(res) {
+  const singers = [];
+  res.forEach(item => {
+    const singer = new Singer(item.id, item.name, item.picUrl)
+    singers.push(singer)
+  })
+  return singers
 }
 
 //封装新歌曲函数（返回数据和前面不一样，没办法)
@@ -64,23 +81,6 @@ export function initSongs(res) {
     songs.push(song)
   });
   return songs
-}
-
-// 歌单简介对象
-class SongList {
-  constructor({ id, name, img, copywriter, count, createTime, author, authorId, authorImg, updateFrequency = "每周更新", updateTime }) {
-    this.id = id;
-    this.name = name;
-    this.img = img;
-    this.count = count;
-    this.createTime = createTime;
-    this.author = author;
-    this.authorId = authorId;
-    this.copywriter = copywriter;
-    this.authorImg = authorImg;
-    this.updateFrequency = updateFrequency;
-    this.updateTime = updateTime
-  }
 }
 
 // 排行榜歌单封装函数
@@ -122,3 +122,48 @@ export const initHomeSongList = function (res) {
   // 将返回数据封装成对象后再使用
   return songLists
 }
+
+// 用户对象
+class User {
+  constructor({ id, name, img, bgImg, birth, city, loginType, createTime, createDays, listenSongs }) {
+    this.id = id;
+    this.name = name;
+    this.img = img;
+    this.bgImg = bgImg;
+    this.birth = birth;
+    this.city = city;
+    this.loginType = loginType;
+    this.createTime = createTime;
+    this.createDays = createDays;
+    this.listenSongs = listenSongs
+  }
+}
+
+//封装用户函数
+export const infoUser = function (res) {
+  // console.log();
+  // console.log(res.data.createTime && res.data.createTime.toString().slice(0, res.data.createTime.toString().length - 3));
+  const user = new User({
+    id: res.data.account && res.data.account.id || res.data.profile.userId,
+    name: res.data.profile.nickname,
+    img: res.data.profile.avatarUrl,
+    bgImg: res.data.profile.backgroundUrl,
+    birth: res.data.profile.birthday,
+    city: res.data.profile.city,
+    loginType: res.data.loginType,
+    createTime: res.data.createTime && res.data.createTime,
+    createDays: res.data.createDays,
+    listenSongs: res.data.listenSongs,
+  })
+  return user
+}
+// 封装我的歌单对象
+// class myList{
+//   constructor({id,name,img,description="",playCount,}) {
+//     this.id=id;
+//     this.name=name;
+//     this.img=img;
+//     this.description=description;
+//     this.playCount=playCount
+//   }
+// }

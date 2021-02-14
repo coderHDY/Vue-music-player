@@ -6,7 +6,7 @@
         <img v-lazy = "item.img" class = "item-img">
       </div>
       <div class = "item-name">{{item.name}}</div>
-      <div v-if = "item.copywriter" class = "item-copywriter">{{item.copywriter}}</div>
+      <div v-if = "item.author" class = "author">--{{item.author}}</div>
     </div>
   </div>
 </template>
@@ -87,5 +87,13 @@
     line-height: 20px;
     vertical-align: middle;
     word-wrap: break-word;
+  }
+
+  .author {
+    display: inline-block;
+    position: absolute;
+    right: 10px;
+    bottom: 3px;
+    font-size: var(--font-small);
   }
 </style>

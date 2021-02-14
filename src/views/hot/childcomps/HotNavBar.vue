@@ -4,7 +4,7 @@
       <img src = "~assets/img/common/more_menu.svg">
     </div>
     <div slot = "center">
-      <TabControl :items = "items" @TabClick = "TabClick"/>
+      <TabControl :items = "items" @tabClick = "tabClick" ref = "controller"/>
     </div>
     <img slot = "right" src = "~assets/img/common/music.svg" class = "music-img"/>
   </NavBar>
@@ -20,14 +20,22 @@
       NavBar,
       TabControl
     },
+    props: {
+      current_index: 0
+    },
     data() {
       return {
         items: [ "私人订制", "流行歌手" ]
       }
     },
     methods: {
-      TabClick(index) {
-        this.$emit("TabClick", index)
+      tabClick(index) {
+        this.$emit("tabClick", index)
+      }
+    },
+    watch: {
+      current_index() {
+        this.$refs.controller.current_index = this.current_index
       }
     }
   }

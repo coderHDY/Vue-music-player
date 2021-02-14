@@ -1,6 +1,6 @@
 <template>
   <NavBar>
-    <img slot = "left" src = "~assets/img/common/more_menu.svg" class = "setting-img"/>
+    <img @click = "showPlay" slot = "left" src = "~assets/img/common/more_menu.svg" class = "setting-img"/>
     <input type = "button" slot = "center" name = "search-box" :value = "placeholder" class = "search-box"/>
     <img slot = "right" src = "~assets/img/common/music.svg" class = "music-img"/>
   </NavBar>
@@ -18,6 +18,12 @@
       placeholder: {
         type: String,
         default: "周杰伦"
+      }
+    },
+    methods: {
+      showPlay() {
+        this.$toast.show("去音乐界面", 1500)
+        console.log("去音乐界面");
       }
     }
   }
@@ -37,6 +43,7 @@
     background-color: #fff;
     background-image: url("../../../assets/img/common/search.svg");
     background-repeat: no-repeat;
+    line-height: 30px;
     background-position: 20%;
     background-size: 20px 20px;
     border-radius: 22px;

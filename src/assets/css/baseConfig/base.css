@@ -26,7 +26,7 @@
 body {
   user-select: none;
   -webkit-tap-highlight-color: transparent;
-  background-color: var(--color-dust);
+  background-color: var(--color-dust) !important;
   color: var(--color-text);
   width: 100vw;
   height: 100vh;

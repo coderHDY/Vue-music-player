@@ -15,6 +15,10 @@
         this.$emit("imageLoad")
       },
       upBigger(y) {
+        // 调用时用scroll监听距顶部Y
+        // if (position["y"] > 0) {
+        //   this.$refs.topImg.upBigger(position["y"])
+        // }
         this.$refs.topImage.style.width = "calc(100vw + " + y / 2 + "px)";
         this.$refs.topImage.style.top = "-" + (y + 1) + "px";
       }

@@ -2,7 +2,7 @@ import { request } from "./axios";
 import axios from "axios";
 
 // 登录
-export function logIn() {
+export function defaultLogIn() {
   return request({
     url: "/login/cellphone?phone=15542640501&password=Huang7520",
     connections: "keep-alive",

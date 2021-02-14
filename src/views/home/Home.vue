@@ -2,20 +2,20 @@
   <div class = "home">
     <HomeNavBar/>
     <TabControl id = "hidden-bar" class = "home-tab-control"
-                :items = "items" @TabClick = "TabClick"
+                :items = "items" @tabClick = "tabClick"
                 ref = "bar1" v-show = "isShowTopBar"/>
     <Scroll class = "scroll" :probe-type = "3"
             :pull-up-load = "true"
             @pullingUp = "pullUpload"
             @scroll = "scroll"
             ref = "scroll">
-      <Swiper :banners = "banners" @imageLoad = "imageLoad"/>
+      <Swiper :banners = "banners" @imageLoad = "imageLoad" ref = "swiper"/>
       <DelayRecommends :recommends = "recommends"
                        @queryRankOfLists = "queryRankOfLists"
                        @imageLoad = "imageLoad"
                        @queryList = "queryList"/>
       <RecommendList :recommendSongList = "recommendSongList" @imageLoad = "imageLoad" @queryList = "queryList"/>
-      <TabControl class = "home-tab-control" :items = "items" @TabClick = "TabClick" ref = "bar2"/>
+      <TabControl class = "home-tab-control" :items = "items" @tabClick = "tabClick" ref = "bar2"/>
       <HomeTypeList :type-list = "typeList[current_index].list" :current_index = "current_index"
                     @queryList = "queryList"/>
     </Scroll>
@@ -40,11 +40,12 @@
     homeSwipeRequest,
     hotArtist,
     initTypes,
-    logIn,
     recommendSongList,
     recommendSongList2
   } from "../../network/home";
-  import { initHomeSongList, initSinger } from "../../network/types";
+  import { infoUser, initHomeSongList, initSinger } from "../../network/types";
+  import { loginStatus, loginStatus2, userDetail } from "../../network/user";
+  import { LOGIN } from "../../store/mutations-types";
 
   export default {
     name: "Home",
@@ -71,6 +72,7 @@
         isShowTopBar: false
       }
     },
+    // region
     components: {
       HomeNavBar,
       Swiper,
@@ -80,8 +82,9 @@
       TabControl,
       HomeTypeList
     },
+    // endregion
     methods: {
-      TabClick(index) {
+      tabClick(index) {
         this.current_index = index;
         this.$refs.bar1.current_index = index;
         this.$refs.bar2.current_index = index;
@@ -105,29 +108,46 @@
             })
         }
       },
+      // 配合checkLogin做检查和防网络堵截
+      isLogin(res) {
+        // console.log(res);
+        if (res.toString().indexOf("301") !== -1) {
+          this.$router.replace("/login");
+        } else {
+          userDetail(res.data.profile.userId).then(res => {
+            this.$store.commit(LOGIN, infoUser(res))
+            this.initData()
+          })
+        }
+        // console.log(res);
+      },
+      //检查登录状态
+      checkLogin() {
+        loginStatus().then(res => this.isLogin(res)).catch(() => {
+          loginStatus2().then(res => this.isLogin(res))
+        })
+      },
       // 初始化数据
       initData() {
-        logIn().then(res => {
-          recommendSongList().then(res => {
+        recommendSongList().then(res => {
+          this.recommendSongList = res.data.recommend
+        }).catch(() => {
+          recommendSongList2().then(res => {
             this.recommendSongList = res.data.recommend
-          }).catch(() => {
-            recommendSongList2().then(res => {
-              this.recommendSongList = res.data.recommend
-            })
-          });
-          //轮播图数据
-          homeSwipeRequest().then(res => {
-            this.banners = res.data.banners
-          });
-          //每日推荐的三个数据
-          delayRecommends().then(res => {
-            this.recommends = res.data.data.splice(0, 3);
-          }).catch(() => {
-            delayRecommends2().then(res => {
-              this.recommends = res.data.data.splice(0, 3);
-            })
           })
         });
+        //轮播图数据
+        homeSwipeRequest().then(res => {
+          this.banners = res.data.banners
+        });
+        //每日推荐的三个数据
+        delayRecommends().then(res => {
+          this.recommends = res.data.data.splice(0, 3);
+        }).catch(() => {
+          delayRecommends2().then(res => {
+            this.recommends = res.data.data.splice(0, 3);
+          })
+        })
         initTypes().then(res => {
           this.typeList[0].list = initSinger(res[0].data.artists);
           this.typeList[1].list = initHomeSongList(res[1].data.playlists);//已经格式化
@@ -139,11 +159,7 @@
       }
       ,
       scroll(position) {
-        if (-position.y > this.contBarOffset) {
-          this.isShowTopBar = true
-        } else {
-          this.isShowTopBar = false
-        }
+        this.isShowTopBar = -position.y > this.contBarOffset;
       },
       queryList(option) {
         //搜索哪种类型由 option 里的 type 决定
@@ -160,10 +176,11 @@
       }
     },
     created() {
-      this.initData()
+      this.checkLogin()
     },
     activated() {
-      this.$refs.scroll.refresh()
+      this.$refs.scroll.refresh();
+      this.$refs.swiper.reloadSwiper()
     }
   }
 </script>

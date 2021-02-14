@@ -22,6 +22,7 @@
   // 网络调用
   import { getDelaySongs, getNewSongs, queryArtistInfo, queryArtistSongs, querySongList } from "../../network/songList";
   import { initHomeSongList, initNewSongs, initSongs } from "../../network/types";
+  import { formatDate } from "../../components/common/utils/utils";
 
   export default {
     name: "SongsList",
@@ -82,8 +83,8 @@
       },
       queryDelaySongs() {
         getDelaySongs().then(res => {
-          const date = new Date();
-          const showDate = date.getDay() + " / " + date.getMonth();
+          const date = Date.parse(new Date());
+          const showDate = formatDate(date, "MM-dd");
           this.songsList = initSongs(res.data.data.dailySongs);
           this.$set(this.option, "img", this.songsList[0].img) //重点：新增监听
           this.$set(this.option, "name", showDate + " 每日推荐") //重点：新增监听

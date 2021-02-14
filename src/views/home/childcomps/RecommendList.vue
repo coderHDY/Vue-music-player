@@ -80,9 +80,10 @@
 
 <style scoped>
   .recommend-box {
+    position: relative;
     background-color: #fff;
     margin-top: .3rem;
-    margin-bottom: 3px;
+    margin-bottom: 10px;
   }
 
   .recommend-title {

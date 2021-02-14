@@ -10,13 +10,13 @@ export function debounce(func, delay) { //定义防抖函数
 
 //格式化时间
 export function formatDate(date, fmt) {
-  date = new Date(date * 1000)
+  date = new Date(date)
   if (/(y+)/.test(fmt)) {
     fmt = fmt.replace(RegExp.$1, (date.getFullYear() + "").substr(4 - RegExp.$1.length));
   }
   let o = {
     'M+': date.getMonth() + 1,
-    'd+': date.getDay(),
+    'd+': date.getDate(),
     'h+': date.getHours(),
     'm+': date.getMinutes(),
     's+': date.getSeconds()

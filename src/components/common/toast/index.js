@@ -1,9 +1,9 @@
-import Toast from "./Toast";
+import MyToast from "./MyToast";
 
 const obj = {}
 obj.install = function (Vue) {
   // 1.创建组件构造器
-  const toastConstructor = Vue.extend(Toast);
+  const toastConstructor = Vue.extend(MyToast);
   // 2.注册对象
   const toast = new toastConstructor();
   // 3.手动挂载到某一个元素上 );
