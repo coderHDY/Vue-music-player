@@ -1,4 +1,4 @@
-import { LOGIN, LOGOUT } from "./mutations-types";
+import { LOGIN, LOGOUT, SETINDEX, SETLIST, SETSONG } from "./mutations-types";
 import { vm } from "../main";
 
 export default {
@@ -7,5 +7,14 @@ export default {
   },
   [LOGOUT](state) {
     state.user = null
+  },
+  [SETSONG](state,song){
+    state.playingSong=song
+  },
+  [SETLIST](state,list){
+    state.playingList=list
+  },
+  [SETINDEX](state,index){
+    state.playingIndex=index
   }
 }

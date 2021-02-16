@@ -22,8 +22,8 @@
     },
     methods: {
       showPlay() {
-        this.$toast.show("去音乐界面", 1500)
-        console.log("去音乐界面");
+        // this.$toast.show("去音乐界面", 1500)
+        this.$bus.$emit("playerShow")
       }
     }
   }

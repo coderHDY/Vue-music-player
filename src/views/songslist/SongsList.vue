@@ -28,7 +28,7 @@
     name: "SongsList",
     data() {
       return {
-        title: "歌单",
+        title:"歌单",
         option: null,
         navBarOffset: 0,
         songsList: [],

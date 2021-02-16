@@ -1,5 +1,5 @@
 <template>
-  <NavBar class = "nav-bar">
+  <NavBar class = "nav-bar" :class = "{'bg-color':isBgCollor}">
     <img src = "../../../assets/img/common/more_menu.svg" slot = "left" @click = "showPlay" class = "setting"/>
     <div slot = "center">{{title}}</div>
     <img src = "../../../assets/img/common/music.svg" slot = "right" class = "music-img"/>
@@ -17,7 +17,10 @@
       NavBar
     },
     props: {
-      title: String
+      title: String,
+      isBgCollor: {
+        type: Boolean
+      }
     },
     methods: {
       showPlay() {
@@ -28,6 +31,10 @@
 </script>
 
 <style scoped>
+  .bg-color {
+    background-color: var(--color-red);
+  }
+
   .nav-bar {
     position: absolute;
     top: 0;

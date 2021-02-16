@@ -8,9 +8,10 @@ class Singer {
 }
 
 // 歌曲对象
-class Song {
-  constructor({ id, name, img, alId, alName, singer, singerId, mark }) {
-    this.id = id;
+export class Song {
+  constructor({ url, id, name, img, alId, alName, singer, singerId, mark }) {
+    this.url = url,
+      this.id = id;
     this.name = name;
     this.img = img;
     this.alId = alId;
@@ -21,6 +22,10 @@ class Song {
   }
 }
 
+// 封装单曲对象
+// export function initSong(res){
+//   const song=new Song({id:res.songs[0].id})
+// }
 // 歌单简介对象
 class SongList {
   constructor({ id, name, img, copywriter, count, createTime, author, authorId, authorImg, updateFrequency = "每周更新", updateTime }) {

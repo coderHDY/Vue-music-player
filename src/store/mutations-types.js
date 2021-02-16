@@ -1,2 +1,5 @@
-export const LOGIN="login"
-export const LOGOUT="logout"
+export const LOGIN = "login"
+export const LOGOUT = "logout"
+export const SETSONG = "setSong"
+export const SETLIST = "setList"
+export const SETINDEX = "setIndex"

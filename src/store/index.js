@@ -7,7 +7,10 @@ import getters from "./getters";
 Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
-    // user: {}
+    playingSong: {},
+    playingList:null,
+    playingIndex:0
+    // user:{}
   },
   modules: {},
   mutations,

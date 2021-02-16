@@ -1,6 +1,6 @@
 <template>
   <div class = "list-box">
-    <div v-for = "(item,index) in list" class = "item-box">
+    <div v-for = "(item,index) in list" class = "item-box" @click = "playSong(index)">
       <span class = "index">{{index+1}}</span>
       <div class = "info-box">
         <div class = "title">{{item.name}}</div>
@@ -16,6 +16,12 @@
     props: {
       list: {
         type: Array
+      }
+    },
+    methods: {
+      playSong(index) {
+        this.$store.dispatch("play", { list: this.list, index: index })
+        this.$bus.$emit("playerShow")
       }
     }
   }

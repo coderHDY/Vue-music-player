@@ -1,12 +1,12 @@
 <template>
   <div class = "user">
-    <UserNavBar :title = "title"/>
+    <UserNavBar :title = "title" :isBgCollor = "isBgCollor"/>
     <Scroll class = "scroll"
             ref = "scroll"
             :probeType = "3"
             @scroll = "scroll">
       <TopImg :img = "user&&user.bgImg" class = "top-img" ref = "topImg" @imageLoad = "imageLoad"/>
-      <UserInfoMessage :user = "user"/>
+      <UserInfoMessage :user = "user" ref = "userMessage"/>
       <SongListView :list = "songList" @itemClick = "itemClick"/>
     </Scroll>
   </div>
@@ -31,6 +31,7 @@
       return {
         user: null,
         navBarOffset: 0,
+        isBgCollor: false,
         songList: []
       }
     },
@@ -47,11 +48,16 @@
         if (position["y"] > 0) {
           this.$refs.topImg.upBigger(position["y"])
         }
+        if (-position["y"] > this.navBarOffset - 44) {
+          this.isBgCollor = true
+        } else {
+          this.isBgCollor = false
+        }
       },
       imageLoad() {
         this.$refs.scroll.refresh();
         //从评论开始变色
-        // this.navBarOffset = this.$refs.infoBox.$el.offsetTop;
+        this.navBarOffset = this.$refs.userMessage.$el.offsetTop;
       },
       // 配合checkLogin做检查和防网络堵截
       isLogin(res) {

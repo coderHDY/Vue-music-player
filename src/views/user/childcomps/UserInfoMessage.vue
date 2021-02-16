@@ -102,7 +102,7 @@
     position: absolute;
     display: block;
     left: 50%;
-    transform: translate(-50%, 10%);
+    transform: translate(-50%, 5%);
     height: 60px;
     line-height: 56px;
     padding: 0 20px;

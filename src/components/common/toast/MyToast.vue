@@ -1,6 +1,6 @@
 <template>
   <transition name = "fade">
-    <div class = "toast" v-if = "isShow">
+    <div class = "toast" v-show = "isShow">
       {{message}}
     </div>
   </transition>
@@ -33,11 +33,11 @@
 
 <style scoped>
   .fade-enter-active, .fade-leave-active {
-    transition: opacity .5s;
+    transition: opacity .5s !important;
   }
 
   .fade-enter, .fade-leave-to {
-    opacity: 0.3;
+    opacity: 0.1 !important;
   }
 
   .toast {
