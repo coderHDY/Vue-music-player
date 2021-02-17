@@ -28,7 +28,8 @@ export function delayRecommends() {
     }
   )
 }
-export function delayRecommends2(){
+
+export function delayRecommends2() {
   return request(
     {
       url: "/homepage/dragon/ball",
@@ -36,6 +37,7 @@ export function delayRecommends2(){
     }
   )
 }
+
 //推荐歌单(规避网络检查)
 export function recommendSongList() {
   return request({
@@ -43,12 +45,14 @@ export function recommendSongList() {
     withCredentials: false
   })
 }
-export function recommendSongList2(){
+
+export function recommendSongList2() {
   return request({
     url: "/recommend/resource",
     // withCredentials: false
   })
 }
+
 // 、热门歌手、网友精选
 export function hotArtist(offset = 0, limit = 30) {
   return request({
@@ -80,5 +84,25 @@ export function initTypes() {
 function hotSongList() {
   return request({
     url: "/playlist/hot"
+  })
+}
+
+// 默认搜索关键词
+export function defaultSearch() {
+  return request({
+    url: "/search/default",
+    withCredentials: false
+  })
+}
+
+// 默认搜索关键词
+export function searchSongs(keywords) {
+  return request({
+    url: "/cloudsearch",
+    withCredentials: false,
+    params: {
+      keywords: keywords,
+      limit: 100
+    }
   })
 }

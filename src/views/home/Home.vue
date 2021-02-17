@@ -1,6 +1,6 @@
 <template>
   <div class = "home">
-    <HomeNavBar/>
+    <HomeNavBar :placeholder = "defaultKeyword"/>
     <TabControl id = "hidden-bar" class = "home-tab-control"
                 :items = "items" @tabClick = "tabClick"
                 ref = "bar1" v-show = "isShowTopBar"/>
@@ -34,6 +34,7 @@
   import Swiper from "../../components/common/swiper/mySwiper"
   // 网络引用
   import {
+    defaultSearch,
     delayRecommends,
     delayRecommends2,
     goodSongList,
@@ -69,7 +70,8 @@
         },
         contBarOffset: 0,
         current_index: 0,
-        isShowTopBar: false
+        isShowTopBar: false,
+        defaultKeyword: ""
       }
     },
     // region
@@ -80,7 +82,7 @@
       DelayRecommends,
       RecommendList,
       TabControl,
-      HomeTypeList
+      HomeTypeList,
     },
     // endregion
     methods: {
@@ -173,10 +175,16 @@
           path: "listoflists",
           query: options
         })
+      },
+      getdefaultSearch() {
+        defaultSearch().then(res => {
+          this.defaultKeyword = res.data.data.realkeyword;
+        })
       }
     },
     created() {
       this.checkLogin()
+      this.getdefaultSearch()
     },
     activated() {
       this.$refs.scroll.refresh();

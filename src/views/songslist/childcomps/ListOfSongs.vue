@@ -29,10 +29,10 @@
 
 <style scoped>
   .list-box {
-    display: block;
     position: relative;
+    display: block;
     width: 100vw;
-    margin-top: 10px;
+    padding-top: 44px;
   }
 
   .item-box {

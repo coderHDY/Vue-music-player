@@ -9,7 +9,9 @@ export default new Vuex.Store({
   state: {
     playingSong: {},
     playingList:null,
-    playingIndex:0
+    playingIndex:0,
+    history:[],
+    historyIndex:-1
     // user:{}
   },
   modules: {},

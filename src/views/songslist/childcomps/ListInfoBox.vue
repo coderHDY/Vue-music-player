@@ -2,7 +2,7 @@
   <div class = "information-box">
     <span class = "count"
           v-if = "information.info && information.info.count">播放量：{{information.info.count|count}}</span>
-    <div class = "message-box">
+    <div class = "message-box" v-if = "information.info">
       <div class = "description">{{information.message}}</div>
       <div v-if = "information.info">
         <div class = "creator-info">
@@ -11,7 +11,7 @@
         </div>
         <span class = "author-copywriter">{{information.info.copywriter}}</span>
       </div>
-      <div class = "list-name" ref = "listName">{{information.name}}</div>
+      <div class = "list-name" ref = "listName">{{information.name || information.info && information.info.name}}</div>
     </div>
   </div>
 </template>
@@ -49,7 +49,7 @@
     position: absolute;
     top: -28px;
     right: 0;
-    padding: 5px 10px;
+    padding: 3px 10px;
     background-color: rgba(255, 255, 255, 0.52);
   }
 

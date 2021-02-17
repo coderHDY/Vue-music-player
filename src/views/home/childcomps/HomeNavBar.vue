@@ -1,8 +1,14 @@
 <template>
   <NavBar>
-    <img @click = "showPlay" slot = "left" src = "~assets/img/common/more_menu.svg" class = "setting-img"/>
-    <input type = "button" slot = "center" name = "search-box" :value = "placeholder" class = "search-box"/>
-    <img slot = "right" src = "~assets/img/common/music.svg" class = "music-img"/>
+    <img @click = "showPlay" slot = "left" src = "~assets/img/common/music.svg" class = "setting-img"/>
+    <!--    <button @click = "showSearch" type = "button" slot = "center"-->
+    <!--            class = "search-box">-->
+    <!--      {{placeholder}}-->
+    <!--    </button>-->
+    <input class = "search-box" slot = "center" type = "text" v-model = "keywords"
+           :placeholder = "placeholder"
+           @keyup.enter = "search">
+    <img @click = "showPlay" slot = "right" src = "~assets/img/common/music.svg" class = "music-img"/>
   </NavBar>
 </template>
 
@@ -14,6 +20,11 @@
     components: {
       NavBar
     },
+    data() {
+      return {
+        keywords: ""
+      }
+    },
     props: {
       placeholder: {
         type: String,
@@ -22,8 +33,23 @@
     },
     methods: {
       showPlay() {
-        // this.$toast.show("去音乐界面", 1500)
         this.$bus.$emit("playerShow")
+      },
+      showSearch() {
+        this.$emit("showSearch")
+      },
+      search() {
+        if (this.keywords.trim() === "") {
+          this.$toast.show("搜索不能为空")
+        } else {
+          this.$router.push({
+            path: "songslist",
+            query: {
+              type: "searchSong",
+              keywords: this.keywords
+            }
+          })
+        }
       }
     }
   }
@@ -44,7 +70,8 @@
     background-image: url("../../../assets/img/common/search.svg");
     background-repeat: no-repeat;
     line-height: 30px;
-    background-position: 20%;
+    padding-left: 17%;
+    background-position: 10%;
     background-size: 20px 20px;
     border-radius: 22px;
     color: var(--color-text-dust);

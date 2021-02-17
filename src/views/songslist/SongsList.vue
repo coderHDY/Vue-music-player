@@ -4,7 +4,7 @@
     <Scroll class = "scroll" ref = "scroll"
             :probeType = "3"
             @scroll = "scroll">
-      <TopImg :img = "option && option.img" ref = "topImg" @imageLoad = "imageLoad"/>
+      <TopImg :img = "option && option.img" ref = "topImg" @imageLoad = "imageLoad" v-if = "option && option.img"/>
       <ListInfoBox :information = "option" ref = "infoBox"/>
       <ListOfSongs :list = "songsList"/>
     </Scroll>
@@ -23,12 +23,13 @@
   import { getDelaySongs, getNewSongs, queryArtistInfo, queryArtistSongs, querySongList } from "../../network/songList";
   import { initHomeSongList, initNewSongs, initSongs } from "../../network/types";
   import { formatDate } from "../../components/common/utils/utils";
+  import { searchSongs } from "../../network/home";
 
   export default {
     name: "SongsList",
     data() {
       return {
-        title:"歌单",
+        title: "歌单",
         option: null,
         navBarOffset: 0,
         songsList: [],
@@ -50,15 +51,16 @@
       },
       scroll(position) {
         //做navBar
-        if (-position["y"] > this.navBarOffset - 44) {
+        if (-position["y"] >= this.navBarOffset) {
           this.isBgCollor = true
         } else {
           this.isBgCollor = false
         }
         //做图片放大效果
         if (position["y"] > 0) {
-          this.$refs.topImg.upBigger(position["y"])
-        } else {
+          if (this.$refs.topImg) {
+            this.$refs.topImg.upBigger(position["y"])
+          }
         }
       },
       querySonger() {
@@ -96,6 +98,11 @@
           this.$set(this.option, "img", this.songsList[0].img) //重点：新增监听
           this.$set(this.option, "name", " 新歌推荐") //重点：新增监听
         })
+      },
+      quertSongs() {
+        searchSongs(this.option.keywords).then(res => {
+          this.songsList = initSongs(res.data.result.songs);
+        })
       }
     },
     created() {
@@ -113,10 +120,18 @@
         case "queryNewSongs":
           this.queryNewSongs()
           break;
+        case "searchSong":
+          this.quertSongs()
+          break;
       }
+      this.$bus.$emit("tabBarHidden")
     },
     activated() {
+      this.$bus.$emit("tabBarHidden")
       this.$refs.scroll.refresh()
+    },
+    destroyed() {
+      this.$bus.$emit("tabBarShow")
     },
     updated() {
       this.$refs.scroll.refresh()
@@ -128,7 +143,7 @@
   .scroll {
     position: absolute;
     top: 0;
-    bottom: 60px;
+    bottom: 0;
     width: 100vw;
     overflow: hidden;
   }

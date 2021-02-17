@@ -1,12 +1,10 @@
 <template>
   <NavBar class = "nav-bar">
-    <div slot = "left" class = "back">
-      <img src = "~assets/img/common/more_menu.svg">
-    </div>
+    <img src = "~assets/img/common/music.svg" slot = "left" class = "music-img" @click = "showPlay"/>
     <div slot = "center">
       <TabControl :items = "items" @tabClick = "tabClick" ref = "controller"/>
     </div>
-    <img slot = "right" src = "~assets/img/common/music.svg" class = "music-img"/>
+    <img slot = "right" src = "~assets/img/common/music.svg" class = "music-img" @click = "showPlay"/>
   </NavBar>
 </template>
 
@@ -31,6 +29,10 @@
     methods: {
       tabClick(index) {
         this.$emit("tabClick", index)
+      },
+      showPlay() {
+        // this.$toast.show("去音乐界面", 1500)
+        this.$bus.$emit("playerShow")
       }
     },
     watch: {
@@ -46,7 +48,7 @@
     background-color: #fff;
   }
 
-  .back img, .music-img {
+  .music-img {
     height: 30px;
     width: 30px;
     vertical-align: middle;

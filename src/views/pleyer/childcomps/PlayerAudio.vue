@@ -1,17 +1,17 @@
 <template>
   <div class = "audio-box">
-    <div class = "info-box">
-      <img src = "../../../assets/img/player/like_white.svg" class = "component"/>
-      <img src = "../../../assets/img/player/comment_white.svg" class = "component"/>
-      <img src = "../../../assets/img/player/download.svg" class = "component"/>
-    </div>
+    <!--    <div class = "info-box">-->
+    <!--      <img src = "../../../assets/img/player/like_white.svg" class = "component"/>-->
+    <!--      <img src = "../../../assets/img/player/comment_white.svg" class = "component"/>-->
+    <!--      <img src = "../../../assets/img/player/download.svg" class = "component"/>-->
+    <!--    </div>-->
     <div class = "time-control">
-      <div class = "current-time">{{currentTime | musicTime}}</div>
+      <div class = "current-time">{{ musicTime(currentTime )}}</div>
       <div class = "time-bar" ref = "timeBar" @click = "timeBarClick">
         <hr class = "time-now" style = "right: 100%" ref = "timeNow"/>
         <hr class = "time-last"/>
       </div>
-      <div class = "all-time">{{allTime | musicTime}}</div>
+      <div class = "all-time">{{ musicTime(allTime)}}</div>
     </div>
     <audio :src = "url" autoplay ref = "audio"/>
     <div class = "music-control">
@@ -30,7 +30,7 @@
       <div class = "control-item" @click = "nextClick">
         <img src = "../../../assets/img/player/next.svg">
       </div>
-      <div class = "control-item"><img src = "../../../assets/img/player/list.svg"></div>
+      <div class = "control-item" @click = "goComment"><img src = "../../../assets/img/player/comment_white.svg"></div>
     </div>
   </div>
 </template>
@@ -47,20 +47,25 @@
         audio: null,
         currentTime: 0,
         allTime: 0,
-        playInterval: null,
+        playInterval: null, //清除上一首的监控
         mode: 2,
-        playing: 1
+        playing: 1,
+        nextSong: false  //判断自动下一首，防抖
       }
     },
     computed: {
       isLoop() {
         return this.mode === 0
+      },
+      musicTime() {
+        return timer => {
+          return (Math.floor(timer / 59)).toFixed(0) + ":" + "00".concat((timer % 59).toFixed(0)).slice(-2)
+        }
       }
     },
     mounted() {
       this.$nextTick(() => {
         this.audio = this.$refs.audio;
-        // this.$refs.audio.ended = this.nextClick();
         this.addLoop()
         this.play()
       })
@@ -96,42 +101,38 @@
         this.$store.dispatch("last", { mode: this.mode })
       },
       play() {
+        this.playing = 1
+        if (this.playInterval) clearInterval(this.playInterval)
         this.playInterval = setInterval(() => {
-          this.allTime = isNaN(this.audio.duration) ? 0: this.audio.duration;
-          this.currentTime = this.audio.currentTime;
-          // console.log(this.currentTime);
+          this.allTime = isNaN(this.audio.duration) ? 0: this.audio.duration.toFixed(0);
+          this.currentTime = this.audio.currentTime.toFixed(0);
+          // 可能时间条还没挂在好，需要判断
           if (this.$refs.timeNow) {
             this.$refs.timeNow.style.right = 100 - (this.currentTime * 100 / this.allTime) + "%";
           }
+          //这首放完自动下一首(增加了网络防抖)（判断非loop模式）
+          if (this.allTime === this.currentTime && !this.isLoop && !this.nextSong) {
+            this.nextSong = !this.nextSong
+            this.currentTime = 0
+            this.nextClick()
+            setTimeout(() => {
+              this.nextSong = !this.nextSong
+            }, 1000)
+          }
         })
-      }
-    },
-    filters: {
-      musicTime(timer) {
-        return (Math.floor(timer / 60)).toFixed(0) + ":" + "00".concat((timer % 60).toFixed(0)).slice(-2)
+      },
+      goComment() {
+        this.$emit("goComment")
       }
     }
-    ,
-    watch: {}
   }
 </script>
 
 <style scoped>
   .audio-box {
-    height: 25vh;
+    height: 15vh;
     width: 100vw;
-    background-color: #464646;
-  }
-
-  .info-box {
-    padding: 10px 0;
-    display: flex;
-  }
-
-  .component {
-    flex: 1;
-    height: 30px;
-    width: 30px;
+    /*background-color: #464646;*/
   }
 
   .time-control {
@@ -146,31 +147,38 @@
 
   .time-bar {
     position: relative;
+    display: inline-block;
     flex: 8;
     width: 80vw;
+    margin: 0;
   }
 
   .time-now {
     position: absolute;
-    display: inline-block;
+    display: block;
     border-width: 0;
-    top: 7px;
+    top: 8px;
+    margin: 0;
     left: 0;
     height: 3px;
     background-image: linear-gradient(to right, #fff, rgba(203, 120, 119, 0.75));
   }
 
+  /*宽度百分百，播放的自动覆盖*/
   .time-last {
     position: absolute;
-    display: inline-block;
+    display: block;
     border-width: 0;
-    top: 7px;
+    top: 9px;
+    margin: 0;
     width: 100%;
-    height: 3px;
+    height: 1px;
+    background-color: rgba(238, 238, 238, 0.18);
     color: #f2f2f2;
   }
 
   .music-control {
+    margin-top: 10px;
     display: flex;
   }
 
@@ -183,8 +191,8 @@
 
   .control-item img {
     vertical-align: middle;
-    height: 30px;
-    width: 30px;
+    height: 25px;
+    width: 25px;
   }
 
   .control-item-big {

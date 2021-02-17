@@ -2,7 +2,7 @@
   <div class = "hot">
     <HotNavBar @tabClick = "tabClick" ref = "navBar" :current_index = "current_index"/>
     <SwiperScroll @tabClick = "tabClick" ref = "swiperScroll">
-      <Scroll class = "scroll" slot = "one">
+      <Scroll class = "scroll" slot = "one" ref = "scroll">
         <SongListView :list = "list.hotLists" @itemClick = "itemClick"/>
       </Scroll>
       <Scroll class = "scroll" slot = "two">
@@ -65,6 +65,9 @@
           query: options
         })
       }
+    },
+    activated() {
+      this.$refs.scroll.refresh()
     },
     computed: {
       showList() {

@@ -22,10 +22,37 @@ export class Song {
   }
 }
 
-// 封装单曲对象
-// export function initSong(res){
-//   const song=new Song({id:res.songs[0].id})
-// }
+// 评论对象
+class Comment {
+  constructor({ content, id, isLike, likeNum, userName, userImg, commentDate }) {
+    this.id = id,
+      this.content = content,
+      this.isLike = isLike,
+      this.likeNum = likeNum,
+      this.userName = userName,
+      this.userImg = userImg,
+      this.commentDate = commentDate
+  }
+}
+
+// 封装评论对象
+export function initComment(res) {
+  const commentList = [];
+  res.forEach(item => {
+    const comment = new Comment({
+      id: item.commentId,
+      content: item.content,
+      isLike: item.liked,
+      likeNum: item.likedCount,
+      commentDate: item.time,
+      userName: item.user.nickname,
+      userImg: item.user.avatarUrl
+    })
+    commentList.push(comment)
+  })
+  return commentList
+}
+
 // 歌单简介对象
 class SongList {
   constructor({ id, name, img, copywriter, count, createTime, author, authorId, authorImg, updateFrequency = "每周更新", updateTime }) {
@@ -162,13 +189,3 @@ export const infoUser = function (res) {
   })
   return user
 }
-// 封装我的歌单对象
-// class myList{
-//   constructor({id,name,img,description="",playCount,}) {
-//     this.id=id;
-//     this.name=name;
-//     this.img=img;
-//     this.description=description;
-//     this.playCount=playCount
-//   }
-// }

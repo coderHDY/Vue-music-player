@@ -12,7 +12,7 @@
     props: {
       img: {
         type: String,
-        default: "../../../assets/img/user/login/music_white.svg"
+        default: ""
       }
     }
   }
@@ -22,7 +22,7 @@
   .song-box {
     position: relative;
     margin-top: 44px;
-    height: calc(75vh - 44px);
+    height: calc(85vh - 44px);
     width: 100vw;
     padding-top: 35%;
   }
