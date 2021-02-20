@@ -2,7 +2,7 @@
   <div class = "information-box">
     <span class = "count"
           v-if = "information.info && information.info.count">播放量：{{information.info.count|count}}</span>
-    <div class = "message-box" v-if = "information.info">
+    <div class = "message-box" v-if = "information">
       <div class = "description">{{information.message}}</div>
       <div v-if = "information.info">
         <div class = "creator-info">

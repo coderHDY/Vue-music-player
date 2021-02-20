@@ -51,7 +51,7 @@
       },
       scroll(position) {
         //做navBar
-        if (-position["y"] >= this.navBarOffset) {
+        if (-position["y"] >= this.navBarOffset || this.option.type === "searchSong") {
           this.isBgCollor = true
         } else {
           this.isBgCollor = false
@@ -122,6 +122,7 @@
           break;
         case "searchSong":
           this.quertSongs()
+          this.isBgCollor = true //查歌页面不需要监听
           break;
       }
       this.$bus.$emit("tabBarHidden")

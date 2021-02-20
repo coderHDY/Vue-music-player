@@ -5,7 +5,7 @@
       <Scroll class = "scroll" slot = "one" ref = "scroll">
         <SongListView :list = "list.hotLists" @itemClick = "itemClick"/>
       </Scroll>
-      <Scroll class = "scroll" slot = "two">
+      <Scroll class = "scroll" slot = "two" ref = "scroll2">
         <SongListView :list = "list.hotSinger" @itemClick = "itemClick"/>
       </Scroll>
     </SwiperScroll>
@@ -68,6 +68,7 @@
     },
     activated() {
       this.$refs.scroll.refresh()
+      this.$refs.scroll2.refresh()
     },
     computed: {
       showList() {

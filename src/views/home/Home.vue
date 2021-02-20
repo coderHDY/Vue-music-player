@@ -45,7 +45,7 @@
     recommendSongList2
   } from "../../network/home";
   import { infoUser, initHomeSongList, initSinger } from "../../network/types";
-  import { loginStatus, loginStatus2, userDetail } from "../../network/user";
+  import { loginStatus, loginStatus2, logout, userDetail } from "../../network/user";
   import { LOGIN } from "../../store/mutations-types";
 
   export default {
@@ -126,7 +126,10 @@
       //检查登录状态
       checkLogin() {
         loginStatus().then(res => this.isLogin(res)).catch(() => {
-          loginStatus2().then(res => this.isLogin(res))
+          loginStatus2().then(res => this.isLogin(res)).catch(() => {
+            logout()
+            this.$router.replace("/login");
+          })
         })
       },
       // 初始化数据

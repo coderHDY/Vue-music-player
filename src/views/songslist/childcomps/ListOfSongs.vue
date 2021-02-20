@@ -32,7 +32,7 @@
     position: relative;
     display: block;
     width: 100vw;
-    padding-top: 44px;
+    padding-top: 14px;
   }
 
   .item-box {
