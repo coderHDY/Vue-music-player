@@ -200,7 +200,8 @@
   .scroll {
     position: absolute;
     top: 44px;
-    bottom: 60px;
+    /*height: calc(100vh - 104px);*/
+    height: calc(100vh - 124px);
     width: 100vw;
     overflow: hidden;
   }

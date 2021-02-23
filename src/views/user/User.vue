@@ -124,9 +124,10 @@
   }
 
   .scroll {
-    position: relative;
+    position: absolute;
     top: 0;
-    height: calc(100vh - 60px);
+    /*height: calc(100vh - 60px);*/
+    height: calc(100vh - 80px);
     width: 100vw;
     overflow: hidden;
   }
