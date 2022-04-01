@@ -1,17 +1,3 @@
-// const path = require("path")
-// const resolve = dir => path.join(__dirname, dir)
-// module.exports = {
-//   chainWebpack: config => {
-//     config.resolve.alias
-//       .set("@", resolve("src"))
-//       .set("assets", resolve("@/assets"))
-//       .set("common", resolve("@/common"))
-//       .set("components", resolve("@/components"))
-//       .set("network", resolve("@/network"))
-//       .set("views", resolve("@/views"))
-//       .set("store", resolve("@/store"))
-//   }
-// }
 module.exports = {
   configureWebpack: {
     resolve: {
@@ -22,6 +8,17 @@ module.exports = {
         "network": "@/network",
         "views": "@/views",
         "store": "@/store"
+      }
+    }
+  },
+  devServer: {
+    proxy: {
+      '/api': {
+        target: 'http://39.107.12.241:8088/',
+        changeOrigin: true, // 跨域
+        pathRewrite: {
+          '^/api': '/'
+        }
       }
     }
   }
