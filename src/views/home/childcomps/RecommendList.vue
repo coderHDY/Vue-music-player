@@ -120,10 +120,13 @@ export default {
   width: 23vh;
   height: 100%;
   padding: 0.1rem 0.1rem;
-  text-align: top;
+  text-align: center;
+  vertical-align: top;
 }
 
 .recommend-item img {
+  position: relative;
+  top: 0;
   width: 80%;
   border-radius: 0.5rem;
   vertical-align: top;
@@ -144,11 +147,11 @@ export default {
 
 .item-count {
   position: absolute;
-  right: 21%;
+  right: 11%;
   top: 4px;
   padding: 1px 3px;
   border-radius: 0.3rem;
-  font-size: 0.3rem;
+  font-size: 0.8rem;
   color: #fff;
   background-color: rgba(181, 181, 181, 0.7);
 }
