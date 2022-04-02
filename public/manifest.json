@@ -1,7 +1,7 @@
 {
   "short_name": "音乐",
   "name": "coderhdy music",
-  "icon": [{
+  "icons": [{
       "src": "./img/icons/logo.png",
       "sizes": "16x16",
       "type": "image/png"
