@@ -76,10 +76,11 @@ export default {
   },
   filters: {
     count(count) {
-      let ans = count / 10000;
-      return ans > 10000
-        ? Math.floor(ans / 10000) + "亿"
-        : Math.floor(ans) + "万";
+      return count > 100000000
+        ? Math.floor(count / 100000000) + "亿"
+        : count > 10000
+        ? Math.floor(count / 10000) + "万"
+        : count;
     }
   }
 };
