@@ -120,7 +120,7 @@ export default {
   width: 23vh;
   height: 100%;
   padding: 0.1rem 0.1rem;
-  text-align: center;
+  text-align: left;
   vertical-align: top;
 }
 
@@ -135,7 +135,8 @@ export default {
 .item-name {
   position: relative;
   display: block;
-  margin: 3px 7%;
+  width: 80%;
+  margin: 3px 7% 3px 0;
   height: 3.5rem;
   font-size: var(--font-small);
   line-height: 16px;
@@ -147,7 +148,7 @@ export default {
 
 .item-count {
   position: absolute;
-  right: 11%;
+  right: 21%;
   top: 4px;
   padding: 1px 3px;
   border-radius: 0.3rem;
