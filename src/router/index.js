@@ -18,8 +18,7 @@ const Login = () => import("../views/login/login/LoginPage")
 const routes = [
   {
     path: '/',
-    // redirect: '/home',
-    component: Home
+    redirect: '/home'
   },
   {
     path: '/home',
