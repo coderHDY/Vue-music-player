@@ -10,7 +10,7 @@ Vue.use(VueRouter);
 const Home = () => import("../views/home/Home");
 const Hot = () => import("../views/hot/Hot");
 const User = () => import("../views/user/User")
-const SongsList = () => import( "../views/songslist/SongsList");
+const SongsList = () => import("../views/songslist/SongsList");
 const ListOfLists = () => import("../views/listoflists/ListOfLists")
 const Register = () => import("../views/login/register/Register")
 const GetCaptcha = () => import("../views/login/getcaptcha/GetCaptcha")
@@ -18,7 +18,8 @@ const Login = () => import("../views/login/login/LoginPage")
 const routes = [
   {
     path: '/',
-    redirect: '/home'
+    // redirect: '/home',
+    component: Home
   },
   {
     path: '/home',
